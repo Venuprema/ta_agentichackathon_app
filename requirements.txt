@@ -1,0 +1,13 @@
+# Wendy's Hackathon – data generation + Streamlit app
+# Data generation
+pandas>=2.0.0
+faker>=22.0.0
+
+# App
+streamlit>=1.28.0
+google-generativeai>=0.3.0
+openai>=1.0.0
+python-dotenv>=1.0.0
+
+# Tests
+pytest>=7.0.0

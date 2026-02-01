@@ -1,0 +1,28 @@
+# Secrets (never commit)
+.env
+.env.local
+*.env
+!.env.example
+
+# Generated data (run scripts/generate_data.py to create)
+data/*.csv
+
+# Session history (optional: remove to commit sessions)
+sessions/*.json
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/
+System prompts.md
+00_GCP_Setup_and_Data_Generation.ipynb
+*.egg-info/
+
+# IDE
+.idea/
+.vscode/
+
+# OS
+.DS_Store
+Thumbs.db

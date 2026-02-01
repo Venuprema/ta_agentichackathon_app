@@ -1,0 +1,15 @@
+
+__pycache__/
+.pytest_cache/
+.venv/
+venv/
+.git/
+.gitignore
+*.md
+!README.md
+sessions/
+*.pptx
+*.ipynb
+mcps/
+terminals/
+System prompts.md

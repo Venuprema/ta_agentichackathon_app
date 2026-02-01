@@ -1,0 +1,20 @@
+# Do not upload secrets, caches, or unnecessary files to Cloud Build
+__pycache__/
+*.py[cod]
+*.pyo
+.pytest_cache/
+.venv/
+venv/
+.git/
+.gitignore
+*.md
+!README.md
+sessions/
+*.pptx
+extract_pptx.py
+py
+python
+run_app.bat
+tests/
+mcps/
+System prompts.md
