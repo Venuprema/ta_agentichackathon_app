@@ -27,19 +27,48 @@ def _load_dotenv():
 _genai = None
 
 
+def _get_from_streamlit_secrets(key: str) -> Optional[str]:
+    """Read key from st.secrets (dict or attribute), including nested [section] keys."""
+    try:
+        import streamlit as st
+        if not hasattr(st, "secrets") or st.secrets is None:
+            return None
+        # Top-level: st.secrets["KEY"] or st.secrets.KEY
+        val = getattr(st.secrets, key, None)
+        if val:
+            return str(val).strip() if isinstance(val, str) else None
+        if isinstance(st.secrets, dict):
+            val = st.secrets.get(key)
+        else:
+            val = getattr(st.secrets, key, None)
+        if val:
+            return str(val).strip() if isinstance(val, str) else None
+        # Nested: st.secrets["api"]["GEMINI_API_KEY"] or similar
+        if hasattr(st.secrets, "get") and callable(getattr(st.secrets, "get")):
+            for section in ("api", "gemini", "llm"):
+                section_obj = st.secrets.get(section)
+                if section_obj and isinstance(section_obj, dict):
+                    val = section_obj.get(key)
+                    if val:
+                        return str(val).strip() if isinstance(val, str) else None
+                sect = getattr(st.secrets, section, None)
+                if sect and hasattr(sect, key):
+                    val = getattr(sect, key, None)
+                    if val:
+                        return str(val).strip() if isinstance(val, str) else None
+    except Exception:
+        pass
+    return None
+
+
 def get_api_key() -> Optional[str]:
     """API key: default from .env, then env, then Streamlit secrets."""
     _load_dotenv()
     key = os.environ.get("GEMINI_API_KEY")
-    if key:
-        return key
-    try:
-        import streamlit as st
-        if hasattr(st, "secrets") and st.secrets:
-            return st.secrets.get("GEMINI_API_KEY")
-    except Exception:
-        pass
-    return None
+    if key and str(key).strip():
+        return str(key).strip()
+    key = _get_from_streamlit_secrets("GEMINI_API_KEY")
+    return key
 
 
 def get_base_url() -> Optional[str]:
